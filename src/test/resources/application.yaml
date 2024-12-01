@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: test
+  r2dbc:
+    pool:
+      validation-query: SELECT 1
+  kafka:
+    consumer:
+      group-id: vs-dictionary-v1-test
+
+app:
+  secret-key: test-secret-key
+  scheduling:
+    enable: false
+
+grpc:
+  server:
+    protovalidation:
+      enabled: true
+    inProcessName: test
+    port: -1
+  client:
+    dictionary:
+      address: in-process:test
+
+sentry:
+  enabled: false

@@ -1,24 +1,77 @@
-# Compiled class file
-*.class
+.DS_Store
+#*.orig
+#
+# Eclipse project files
+#
+.classpath
+.project
+.settings*/
+.springBeans
+.repository
+MANIFEST.MF
+bin*/
+war*/
+build
+.gradle
 
-# Log file
-*.log
+#
+# IntelliJ IDEA project files
+#
+.idea*/
+*.ipr
+*.iml
+*.iws
+*.ids
+*.deb
+classes*/
+out*/
+gen-external-apklibs*/
 
-# BlueJ files
-*.ctxt
+#ignore NetBeans project files
+nb-configuration.xml
+profiles.xml
+catalog.xml
+nbactions.xml
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+#ignore some temporary files
+*.vpp~*
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+#ignore thumbnails created by windows
+Thumbs.db
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+#ignore some log files
+script/*.log
+importStations/*.log
+
+*.backup
+atlassian-ide-plugin.xml
+
+
+#ignore Xcode system files
+*.xcuserstate
+
+@ignore reviewboardrc
+*.reviewboardrc
+
+#py
+*.pyc
+
+#reviewboardrc
+*.reviewboardrc
+
+#Jenkins private maven repo
+.repository
+
+#maven
+target
+
+# codestyle
+.csslintrc
+.eslintignore
+.eslintrc.yml
+.rubocop.yml
+coffeelint.json
+
+.npmrc
+node_modules
+package-lock.json

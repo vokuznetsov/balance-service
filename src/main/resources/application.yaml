@@ -1,0 +1,65 @@
+spring:
+  jooq:
+    sql-dialect: postgres
+  application:
+    name: evrone-balance
+  main:
+    allow-bean-definition-overriding: true
+  r2dbc:
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 10s
+      max-create-connection-time: 10s
+      max-acquire-time: 15s
+      max-life-time: 30s
+      validation-depth: local
+      validation-query: SELECT 1
+    properties:
+      tcpKeepAlive: true
+  datasource:
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: 3
+      maximum-pool-size: 10
+      max-lifetime: 60000
+      data-source-properties:
+        tcpKeepAlive: true
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password:
+    initialization-mode: never
+
+app:
+  pageRequestDefaultLimit: 100
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+
+
+
+#Enable metrics
+management:
+  server:
+    port: 8081
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: ALWAYS
+      probes.enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
+    r2dbc:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
