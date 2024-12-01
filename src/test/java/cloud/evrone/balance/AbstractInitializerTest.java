@@ -1,7 +1,12 @@
 package cloud.evrone.balance;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import cloud.evrone.balance.generator.EntityCreationHelper;
+import cloud.evrone.balance.repository.AccountRepository;
 import cloud.evrone.balance.test.container.PostgresqlContainer;
+import java.time.Duration;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +17,10 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextStoppedEvent;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.test.StepVerifier;
 
 @Slf4j
 @SpringBootTest(classes = BalanceApplication.class)
@@ -26,9 +33,16 @@ public class AbstractInitializerTest {
   @Autowired
   protected WebTestClient client;
 
+  @Autowired
+  protected AccountRepository accountRepository;
+
+  @Autowired
+  protected EntityCreationHelper creationHelper;
+
   @BeforeEach
   public void cleanUp() {
-    log.info("Clean up");
+    log.info("Clean up...");
+    accountRepository.deleteAll().block();
   }
 
 
@@ -60,4 +74,12 @@ public class AbstractInitializerTest {
       });
     }
   }
+
+  protected void assertRowsInTable(int expected, ReactiveCrudRepository<?, ?> repository) {
+    StepVerifier.create(accountRepository.count())
+        .assertNext(count -> assertEquals(expected, count))
+        .expectComplete()
+        .verify(Duration.ofSeconds(10));
+  }
+
 }

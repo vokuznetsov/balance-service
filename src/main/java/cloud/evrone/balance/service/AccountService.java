@@ -1,20 +1,50 @@
 package cloud.evrone.balance.service;
 
-import cloud.evrone.balance.model.Account;
+import cloud.evrone.balance.annotation.ReactiveTransactional;
+import cloud.evrone.balance.mapper.AccountMapper;
+import cloud.evrone.balance.model.entity.AccountEntity;
+import cloud.evrone.balance.model.openapi.AccountModel;
+import cloud.evrone.balance.model.openapi.CreateAccountModel;
+import cloud.evrone.balance.model.openapi.UpdateAccountModel;
 import cloud.evrone.balance.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
 
+  private final AccountMapper accountMapper;
   private final AccountRepository accountRepository;
   //private final TransactionRepository transactionRepository;
 
-  public Mono<Account> createAccount(Account account) {
-    return accountRepository.save(account);
+  @ReactiveTransactional
+  public Mono<AccountModel> createAccount(CreateAccountModel account) {
+    AccountEntity entity = accountMapper.toEntity(account);
+    if (ObjectUtils.isEmpty(entity)) {
+      return Mono.error(new IllegalArgumentException("Account cannot be empty."));
+    }
+
+    // TODO: accountRepository.findById(...) is necessary to return correct row from DB.
+    //  Possibly we can do it using single SQL INSERT.
+    //  For future optimization.
+    //  The same situation for update(..) method.
+    return accountRepository.save(entity)
+        .flatMap(e -> accountRepository.findById(e.getId()))
+        .map(accountMapper::toModel);
+  }
+
+  @ReactiveTransactional
+  public Mono<AccountModel> updateAccount(Long accountId, UpdateAccountModel account) {
+    return accountRepository.findByIdForUpdate(accountId)
+        .flatMap(existingAccount -> {
+          AccountEntity entity = accountMapper.toEntity(existingAccount, account);
+          return accountRepository.save(entity);
+        })
+        .flatMap(e -> accountRepository.findById(e.getId()))
+        .map(accountMapper::toModel);
   }
 
 
