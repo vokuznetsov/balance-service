@@ -1,4 +1,3 @@
-
 plugins {
     id "java"
     id "idea"
@@ -20,9 +19,9 @@ repositories {
 
 ext {
     r2dbcPostgresVersion = "0.9.3.RELEASE"
-
     flywayVersion = '10.8.1'
     postgresVersion = '42.4.0'
+    springDocVersion = '1.6.14'
 
     testcontainersBomVersion = "1.17.3"
     reactorTestVersion = "3.6.5"
@@ -44,16 +43,15 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.14'
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springDocVersion}"
+    implementation "io.micrometer:micrometer-registry-prometheus"
 
     compileOnly "org.projectlombok:lombok"
     annotationProcessor "org.projectlombok:lombok"
 
     testImplementation(enforcedPlatform("org.testcontainers:testcontainers-bom:${testcontainersBomVersion}"))
     testImplementation "io.projectreactor:reactor-test:${reactorTestVersion}"
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testAnnotationProcessor "org.projectlombok:lombok"
     testCompileOnly "org.projectlombok:lombok"
     testImplementation "org.testcontainers:testcontainers"
