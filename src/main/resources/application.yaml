@@ -32,10 +32,8 @@ spring:
     initialization-mode: never
 
 app:
-  pageRequestDefaultLimit: 100
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/postgres
-
 
 
 #Enable metrics

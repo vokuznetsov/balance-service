@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class DataSourceConfiguration {
 
+  // It is necessary to create traditional DataSource because Flyway can't work with r2dbc
   @Bean
   public DataSource dataSource(final DataSourceProperties dataSourceProperties) {
     return DataSourceBuilder.create()
