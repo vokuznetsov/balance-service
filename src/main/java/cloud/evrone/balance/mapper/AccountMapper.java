@@ -1,6 +1,7 @@
 package cloud.evrone.balance.mapper;
 
 import static cloud.evrone.balance.utils.ConsumerUtils.acceptIfNotNull;
+import static cloud.evrone.balance.utils.Utils.roundDown;
 
 import cloud.evrone.balance.model.entity.AccountEntity;
 import cloud.evrone.balance.model.openapi.AccountModel;
@@ -17,7 +18,7 @@ public class AccountMapper {
     }
     return AccountEntity.builder()
         .name(model.getName())
-        .balance(model.getBalance())
+        .balance(roundDown(model.getBalance(), 2))
         .build();
   }
 

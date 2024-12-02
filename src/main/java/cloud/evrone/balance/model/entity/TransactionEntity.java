@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table("transactions")
+@Table("balance_transactions")
 @Builder(toBuilder = true)
 public class TransactionEntity {
 
@@ -15,6 +15,6 @@ public class TransactionEntity {
   private Long id;
   private Long accountId;
   private Double amount;
-  private TransactionType type;
-  private LocalDateTime timestamp;
+  private Integer type;
+  private LocalDateTime createdAt;
 }

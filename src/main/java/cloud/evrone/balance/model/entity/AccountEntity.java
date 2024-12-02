@@ -16,7 +16,7 @@ public class AccountEntity {
   @Id
   private Long id;
   private String name;
-  private Long balance;
+  private Double balance;
   private Boolean deleted;
   @CreatedDate
   private LocalDateTime createdAt;

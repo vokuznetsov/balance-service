@@ -1,7 +1,5 @@
 package cloud.evrone.balance.generator;
 
-import static cloud.evrone.balance.utils.Utils.nextLongId;
-
 import cloud.evrone.balance.model.entity.AccountEntity;
 import cloud.evrone.balance.model.openapi.AccountModel;
 import cloud.evrone.balance.model.openapi.CreateAccountModel;
@@ -13,9 +11,9 @@ public class AccountGenerator {
 
   public static AccountModel openApiAccountModel() {
     return AccountModel.builder()
-        .id(nextLongId())
+        .id(null)
         .name("name-1")
-        .balance(100L)
+        .balance(100.0)
         .deleted(false)
         .build();
   }

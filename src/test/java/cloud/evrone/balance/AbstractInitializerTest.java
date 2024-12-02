@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cloud.evrone.balance.generator.EntityCreationHelper;
 import cloud.evrone.balance.repository.AccountRepository;
+import cloud.evrone.balance.repository.TransactionRepository;
 import cloud.evrone.balance.test.container.PostgresqlContainer;
 import java.time.Duration;
 import java.util.List;
@@ -35,6 +36,8 @@ public class AbstractInitializerTest {
 
   @Autowired
   protected AccountRepository accountRepository;
+  @Autowired
+  protected TransactionRepository transactionRepository;
 
   @Autowired
   protected EntityCreationHelper creationHelper;
@@ -42,6 +45,7 @@ public class AbstractInitializerTest {
   @BeforeEach
   public void cleanUp() {
     log.info("Clean up...");
+    transactionRepository.deleteAll().block();
     accountRepository.deleteAll().block();
   }
 
@@ -76,7 +80,7 @@ public class AbstractInitializerTest {
   }
 
   protected void assertRowsInTable(int expected, ReactiveCrudRepository<?, ?> repository) {
-    StepVerifier.create(accountRepository.count())
+    StepVerifier.create(repository.count())
         .assertNext(count -> assertEquals(expected, count))
         .expectComplete()
         .verify(Duration.ofSeconds(10));

@@ -15,7 +15,7 @@ CREATE TABLE balance_transactions
     amount      NUMERIC(15, 2) NOT NULL,
     type        INT            NOT NULL,
     description TEXT,
-    timestamp   TIMESTAMP DEFAULT now(),
+    created_at  TIMESTAMP DEFAULT now(),
 
     constraint fk_transactions_account foreign key (account_id) REFERENCES balance_accounts (id)
 );

@@ -1,10 +1,11 @@
-package cloud.evrone.balance.utils;
+package cloud.evrone.balance;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import lombok.experimental.UtilityClass;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriBuilder;
@@ -48,16 +49,17 @@ public class WebClientUtils {
   public static <T> T makeGetRequest(
       Function<UriBuilder, URI> uriFunction,
       WebTestClient client,
-      Class<T> returnType) {
+      ParameterizedTypeReference<T> returnType) {
 
-    return makeGetRequest(uriFunction, (h) -> {}, client, returnType);
+    return makeGetRequest(uriFunction, (h) -> {
+    }, client, returnType);
   }
 
   public static <T> T makeGetRequest(
       Function<UriBuilder, URI> uriFunction,
       Consumer<HttpHeaders> headers,
       WebTestClient client,
-      Class<T> returnType) {
+      ParameterizedTypeReference<T> returnType) {
 
     return client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
         .get()
@@ -68,19 +70,4 @@ public class WebClientUtils {
         .expectBody(returnType)
         .returnResult().getResponseBody();
   }
-
-  public static <T> T makeDeleteRequest(
-      Function<UriBuilder, URI> uriFunction,
-      WebTestClient client,
-      Class<T> returnType) {
-
-    return client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
-        .delete()
-        .uri(uriFunction)
-        .exchange()
-        .expectStatus().isOk()
-        .expectBody(returnType)
-        .returnResult().getResponseBody();
-  }
-
 }

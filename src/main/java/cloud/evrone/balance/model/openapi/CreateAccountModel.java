@@ -8,6 +8,6 @@ import lombok.Data;
 public class CreateAccountModel {
 
   private String name;
-  private Long balance;
+  private Double balance;
 
 }
